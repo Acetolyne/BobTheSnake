@@ -8,6 +8,7 @@ package main
 import (
 	"log"
 	"math/rand"
+  "fmt"
 )
 
 // This function is called when you register your Battlesnake on play.battlesnake.com
@@ -44,7 +45,7 @@ func end(state GameState) {
 // We've provided some code and comments to get you started.
 func move(state GameState) BattlesnakeMoveResponse {
 	//Before we move check where we are
-	fmt.Println(state.you)
+	fmt.Println(state.You.Body[0])
 	possibleMoves := map[string]bool{
 		"up":    true,
 		"down":  true,
