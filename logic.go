@@ -43,6 +43,8 @@ func end(state GameState) {
 // where to move -- valid moves are "up", "down", "left", or "right".
 // We've provided some code and comments to get you started.
 func move(state GameState) BattlesnakeMoveResponse {
+	//Before we move check where we are
+	fmt.Println(state.you)
 	possibleMoves := map[string]bool{
 		"up":    true,
 		"down":  true,
