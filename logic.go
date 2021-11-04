@@ -11,6 +11,8 @@ import (
 	"math/rand"
 )
 
+var possibleMoves map[string]bool
+
 // This function is called when you register your Battlesnake on play.battlesnake.com
 // See https://docs.battlesnake.com/guides/getting-started#step-4-register-your-battlesnake
 // It controls your Battlesnake appearance and author permissions.
@@ -38,6 +40,11 @@ func start(state GameState) {
 // It's purely for informational purposes, you don't have to make any decisions here.
 func end(state GameState) {
 	log.Printf("%s END\n\n", state.Game.ID)
+}
+
+func checkNextMove(state GameState) *map[string]bool {
+	fmt.Println(&possibleMoves)
+	return &possibleMoves
 }
 
 // This function is called on every turn of a game. Use the provided GameState to decide
@@ -86,7 +93,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 	if myHead.X == boardHeight-1 {
 		possibleMoves["up"] = false
 	}
-	fmt.Println(possibleMoves)
+	possibleMoves = *checkNextMove(state)
 	// TODO: Step 2 - Don't hit yourself.
 	// Use information in GameState to prevent your Battlesnake from colliding with itself.
 	// mybody := state.You.Body
