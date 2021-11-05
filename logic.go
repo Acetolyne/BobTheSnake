@@ -68,9 +68,36 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 	return possibleMoves
 }
 
+//Takes in a map of possible moves and returns a map of those values with int values showing prefered direction
+func italiansnake(state GameState, possibleMoves *map[string]bool) {
+	fmt.Println("ITALIAN MOVES", &possibleMoves)
+	////var closestFood int
+
+	////Use below to sort the map
+	// a := []file{
+	// 	{"april.txt", 9}, {"may.txt", 7},
+	//  }
+	//  sort.Slice(a, func (d, e int) bool {
+	// 	return a[d].size < a[e].size
+	//  })
+	//  fmt.Println(a)
+	/////////////////////////////////////////
+	// for _, v := range *possibleMoves {
+	// 	if v == true {
+	// 		for _, v := range state.Board.Food {
+	// 			curDistance := ((v.X - state.You.Body[0].X) + (v.Y - state.You.Body[0].Y))
+	// 			if curDistance < closestFood {
+	// 				closestFood = curDistance
+	// 			}
+	// 		}
+	// 	}
+	// }
+}
+
 //@todo create function that allows us to pass in a slice of coordinates and return possibleMoves
 // This function is called on every turn of a game.
 func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
+	var usedmethod string
 	//Before we move check where we are
 	fmt.Println(state.You.Body[0])
 	//@todo if we are low on health better find food else choose a random technique for x amount of time.
@@ -85,22 +112,25 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 	}
 	fmt.Println("1st", &possibleMoves)
 	myHead := state.You.Body[0] // Coordinates of your head
-	fmt.Println("2nd", &possibleMoves)
 	// TODO: Step 1 - Don't hit walls.
 	// Use information in GameState to prevent your Battlesnake from moving beyond the boundaries of the board.
 	boardWidth := state.Board.Width
 	boardHeight := state.Board.Height
 	if myHead.X == 0 {
-		possibleMoves["left"] = false
+		delete(possibleMoves, "left")
+		//possibleMoves["left"] = false
 	}
 	if myHead.X == boardWidth-1 {
-		possibleMoves["right"] = false
+		delete(possibleMoves, "right")
+		//possibleMoves["right"] = false
 	}
 	if myHead.Y == 0 {
-		possibleMoves["down"] = false
+		delete(possibleMoves, "down")
+		//possibleMoves["down"] = false
 	}
 	if myHead.Y == boardHeight-1 {
-		possibleMoves["up"] = false
+		delete(possibleMoves, "up")
+		//possibleMoves["up"] = false
 	}
 	//possibleMoves = dontCollideSelf(state, possibleMoves)
 
@@ -116,19 +146,23 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 					switch k {
 					case "up":
 						if state.You.Body[0].Y+1 == a.Y && state.You.Body[0].X == a.X {
-							possibleMoves[k] = false
+							delete(possibleMoves, k)
+							//possibleMoves[k] = false
 						}
 					case "down":
 						if state.You.Body[0].Y-1 == a.Y && state.You.Body[0].X == a.X {
-							possibleMoves[k] = false
+							delete(possibleMoves, k)
+							//possibleMoves[k] = false
 						}
 					case "left":
 						if state.You.Body[0].X-1 == a.X && state.You.Body[0].Y == a.Y {
-							possibleMoves[k] = false
+							delete(possibleMoves, k)
+							//possibleMoves[k] = false
 						}
 					case "right":
 						if state.You.Body[0].X+1 == a.X && state.You.Body[0].Y == a.Y {
-							possibleMoves[k] = false
+							delete(possibleMoves, k)
+							//possibleMoves[k] = false
 						}
 					}
 				}
@@ -136,9 +170,25 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 		}
 	}
 	fmt.Println(possibleMoves)
-	//We can only use a technique if there are multiple possible moves
-	// TODO: Step 4 - Find food.
-	// Use information in GameState to seek out and find food.
+	if state.You.Health <= 25 {
+		usedmethod = "italiansnake"
+	} else {
+		usedmethod = *curmethod
+	}
+	switch usedmethod {
+	case "italiansnake":
+		fmt.Println("ITALIAN")
+		italiansnake(state, &possibleMoves)
+	case "shysnake":
+		fmt.Println("SHY")
+		//@todo run from other snakes
+	case "middlesnake":
+		fmt.Println("MIDDLE")
+		//@todo stay away from edges
+	case "rudesnake":
+		fmt.Println("RUDE")
+		//@todo charge other snakes
+	}
 
 	// Finally, choose a move from the available safe moves.
 	// TODO: Step 5 - Select a move to make based on strategy, rather than random.
