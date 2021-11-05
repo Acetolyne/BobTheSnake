@@ -115,22 +115,22 @@ func move(state GameState) BattlesnakeMoveResponse {
 						if v == true {
 							switch k {
 							case "up":
-								if state.You.Body[0].Y+1 == a.Y {
+								if state.You.Body[0].Y+1 == a.Y && state.You.Body[0].X == a.X {
 									fmt.Println("UPDATE:" + k)
 									possibleMoves[k] = false
 								}
 							case "down":
-								if state.You.Body[0].Y-1 == a.Y {
+								if state.You.Body[0].Y-1 == a.Y && state.You.Body[0].X == a.X {
 									fmt.Println("UPDATE:" + k)
 									possibleMoves[k] = false
 								}
 							case "left":
-								if state.You.Body[0].X-1 == a.X {
+								if state.You.Body[0].X-1 == a.X && state.You.Body[0].Y == a.Y {
 									fmt.Println("UPDATE:" + k)
 									possibleMoves[k] = false
 								}
 							case "right":
-								if state.You.Body[0].X+1 == a.X {
+								if state.You.Body[0].X+1 == a.X && state.You.Body[0].Y == a.Y {
 									fmt.Println("UPDATE:" + k)
 									possibleMoves[k] = false
 								}
