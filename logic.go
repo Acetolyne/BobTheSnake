@@ -83,7 +83,7 @@ func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 		fmt.Println("POSSIBLE", allFood)
 		for k, v := range allFood {
 			if v.X > state.You.Body[0].X || v.Y >= state.You.Body[0].Y {
-				PossibleFood = append(allFood[:k], allFood[k+1:]...)
+				PossibleFood = append(PossibleFood, v)
 			}
 		}
 		//}
