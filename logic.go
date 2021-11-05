@@ -68,13 +68,14 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 	return possibleMoves
 }
 
-// This function is called on every turn of a game. Use the provided GameState to decide
-// where to move -- valid moves are "up", "down", "left", or "right".
-// We've provided some code and comments to get you started.
+//@todo create function that allows us to pass in a slice of coordinates and return possibleMoves
+// This function is called on every turn of a game.
 func move(state GameState) BattlesnakeMoveResponse {
 	//Before we move check where we are
 	fmt.Println(state.You.Body[0])
 	Techniques := [...]string{"avoidothers", "snakeeatsnake", "hungrysnake"}
+	//@todo if we are low on health better find food else choose a random technique for x amount of time.
+	fmt.Println("HEALTH:", state.You.Health)
 	CurrentTechnique = Techniques[0]
 	possibleMoves := map[string]bool{
 		"up":    true,
@@ -105,6 +106,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 
 	// TODO: Step 3 - Don't collide with others.
 	// Use information in GameState to prevent your Battlesnake from colliding with others.
+	//@todo always avoid others except maybe their head?
 	if CurrentTechnique == "avoidothers" {
 		for _, snake := range state.Board.Snakes {
 			if snake.ID != state.You.ID {
