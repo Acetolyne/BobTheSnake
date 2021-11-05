@@ -69,8 +69,25 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 }
 
 //Takes in a map of possible moves and returns a map of those values with int values showing prefered direction
-func italiansnake(state GameState, possibleMoves *map[string]bool) {
+func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 	fmt.Println("ITALIAN MOVES", possibleMoves)
+	//If there is only one move then return that move else decide the best one to get us some food
+	if len(*possibleMoves) == 1 {
+		return "up" //(*possibleMoves)[0]
+	} else {
+		fmt.Println(state.You.Body[0])
+		possibleFood := state.Board.Food
+		//if (!(*possibleMoves["up"]) && !(*possibleMoves["right"])) {
+		fmt.Println("BEFORE REMOVE", possibleFood)
+		for k, v := range state.Board.Food {
+			if v.X > state.You.Body[0].X || v.Y > state.You.Body[0].Y {
+				possibleFood = append(possibleFood[:k], possibleFood[k+1:]...)
+			}
+		}
+		//}
+		fmt.Println("AFTER REMOVE:", possibleFood) //will print Answer [9 8 5 3 2 1 0]
+	}
+	return "up"
 	////var closestFood int
 
 	////Use below to sort the map
@@ -170,7 +187,8 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 		}
 	}
 	fmt.Println(possibleMoves)
-	if state.You.Health <= 25 {
+	//@todo change health comparison back to 25 after done testing italiansnake
+	if state.You.Health <= 100 {
 		usedmethod = "italiansnake"
 	} else {
 		usedmethod = *curmethod
