@@ -73,9 +73,10 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 func move(state GameState) BattlesnakeMoveResponse {
 	//Before we move check where we are
 	fmt.Println(state.You.Body[0])
-	Techniques := [...]string{"avoidothers", "snakeeatsnake", "hungrysnake"}
+	Techniques := [...]string{"avoidothers", "snakeeatsnake", "italiansnake"}
 	//@todo if we are low on health better find food else choose a random technique for x amount of time.
 	fmt.Println("HEALTH:", state.You.Health)
+	fmt.Println("FOOD:", state.Board.Food)
 	CurrentTechnique = Techniques[0]
 	possibleMoves := map[string]bool{
 		"up":    true,
