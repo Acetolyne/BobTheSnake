@@ -70,14 +70,13 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 
 //@todo create function that allows us to pass in a slice of coordinates and return possibleMoves
 // This function is called on every turn of a game.
-func move(state GameState) BattlesnakeMoveResponse {
+func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 	//Before we move check where we are
 	fmt.Println(state.You.Body[0])
-	Techniques := [...]string{"avoidothers", "snakeeatsnake", "italiansnake"}
 	//@todo if we are low on health better find food else choose a random technique for x amount of time.
 	fmt.Println("HEALTH:", state.You.Health)
 	fmt.Println("FOOD:", state.Board.Food)
-	CurrentTechnique = Techniques[0]
+	fmt.Println("METHOD:" + *curmethod)
 	possibleMoves := map[string]bool{
 		"up":    true,
 		"down":  true,

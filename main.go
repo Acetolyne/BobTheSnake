@@ -3,9 +3,13 @@ package main
 import (
 	"encoding/json"
 	"log"
+	"math/rand"
 	"net/http"
 	"os"
+	"time"
 )
+
+var curmethod string
 
 type GameState struct {
 	Game  Game        `json:"game"`
@@ -122,7 +126,7 @@ func HandleMove(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	response := move(state)
+	response := move(state, &curmethod)
 
 	w.Header().Set("Content-Type", "application/json")
 	err = json.NewEncoder(w).Encode(response)
@@ -145,6 +149,16 @@ func HandleEnd(w http.ResponseWriter, r *http.Request) {
 	// Nothing to respond with here
 }
 
+func changeMethod(curmethod *string) {
+	for {
+		opts := [...]string{"italiansnake", "shysnake", "middlesnake", "rudesnake"}
+		*curmethod = opts[rand.Intn(len(opts))]
+		sleeptime := time.Duration(rand.Intn(20)) * time.Second
+		time.Sleep(sleeptime)
+
+	}
+}
+
 // Main Entrypoint
 
 func main() {
@@ -152,6 +166,8 @@ func main() {
 	if len(port) == 0 {
 		port = "8080"
 	}
+
+	go changeMethod(&curmethod)
 
 	http.HandleFunc("/", HandleIndex)
 	http.HandleFunc("/start", HandleStart)
