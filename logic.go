@@ -43,7 +43,7 @@ func end(state GameState) {
 }
 
 func checkNextMove(possibleMoves *map[string]bool) {
-	fmt.Println("3rd", &possibleMoves)
+	fmt.Println("3rd", possibleMoves)
 }
 
 // This function is called on every turn of a game. Use the provided GameState to decide
