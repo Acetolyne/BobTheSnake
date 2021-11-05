@@ -43,9 +43,35 @@ func end(state GameState) {
 }
 
 func checkNextMove(state GameState, possibleMoves *map[string]bool) {
+	newPos Coordinates
 	fmt.Println("3rd", possibleMoves)
 	fmt.Println("HEAD:", state.You.Body[0])
-
+	for k, v := range possibleMoves { 
+		if v == true {
+			switch k {
+			case "up":
+					newPos = Coordinates{state.You.Body[0].X, state.You.Body[0].Y + 1}
+					if newPos in state.You.Body {
+						possibleMoves[k] = false
+					}
+			case "down":
+				newPos = Coordinates{state.You.Body[0].X, state.You.Body[0].Y - 1}
+				if newPos in state.You.Body {
+					possibleMoves[k] = false
+				}
+			case "left":
+				newPos = Coordinates{state.You.Body[0].X - 1, state.You.Body[0].Y}
+				if newPos in state.You.Body {
+					possibleMoves[k] = false
+				}
+			case "right":
+				newPos = Coordinates{state.You.Body[0].X + 1, state.You.Body[0].Y}
+				if newPos in state.You.Body {
+					possibleMoves[k] = false
+				}
+			}
+		}
+	}
 }
 
 // This function is called on every turn of a game. Use the provided GameState to decide
