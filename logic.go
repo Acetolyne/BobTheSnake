@@ -12,6 +12,7 @@ import (
 )
 
 var possibleMoves map[string]bool
+var CurrentTechnique string
 
 // This function is called when you register your Battlesnake on play.battlesnake.com
 // See https://docs.battlesnake.com/guides/getting-started#step-4-register-your-battlesnake
@@ -42,13 +43,10 @@ func end(state GameState) {
 	log.Printf("%s END\n\n", state.Game.ID)
 }
 
-func checkNextMove(state GameState, possibleMoves map[string]bool) map[string]bool {
+func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]bool {
 	var newPos Coord
-	fmt.Println("3rd", possibleMoves)
-	fmt.Println("HEAD:", state.You.Body[0])
 
 	for k, v := range possibleMoves {
-		fmt.Println("Key", k)
 		if v == true {
 			switch k {
 			case "up":
@@ -62,7 +60,6 @@ func checkNextMove(state GameState, possibleMoves map[string]bool) map[string]bo
 			}
 			for _, v := range state.You.Body {
 				if v == newPos {
-					fmt.Println("UPDATE", k)
 					possibleMoves[(k)] = false
 				}
 			}
@@ -77,6 +74,8 @@ func checkNextMove(state GameState, possibleMoves map[string]bool) map[string]bo
 func move(state GameState) BattlesnakeMoveResponse {
 	//Before we move check where we are
 	fmt.Println(state.You.Body[0])
+	Techniques := [...]string{"avoidothers", "snakeeatsnake", "hungrysnake"}
+	CurrentTechnique = Techniques[0]
 	possibleMoves := map[string]bool{
 		"up":    true,
 		"down":  true,
@@ -90,8 +89,6 @@ func move(state GameState) BattlesnakeMoveResponse {
 	// Use information in GameState to prevent your Battlesnake from moving beyond the boundaries of the board.
 	boardWidth := state.Board.Width
 	boardHeight := state.Board.Height
-	fmt.Println("width", boardWidth)
-	fmt.Println("height", boardHeight)
 	if myHead.X == 0 {
 		possibleMoves["left"] = false
 	}
@@ -104,14 +101,47 @@ func move(state GameState) BattlesnakeMoveResponse {
 	if myHead.Y == boardHeight-1 {
 		possibleMoves["up"] = false
 	}
-	possibleMoves = checkNextMove(state, possibleMoves)
-	// TODO: Step 2 - Don't hit yourself.
-	// Use information in GameState to prevent your Battlesnake from colliding with itself.
-	// mybody := state.You.Body
+	possibleMoves = dontCollideSelf(state, possibleMoves)
 
 	// TODO: Step 3 - Don't collide with others.
 	// Use information in GameState to prevent your Battlesnake from colliding with others.
-
+	if CurrentTechnique == "avoidothers" {
+		for _, snake := range state.Board.Snakes {
+			if snake.ID != state.You.ID {
+				fmt.Println("HEAD:", state.You.Body[0])
+				for _, a := range snake.Body {
+					fmt.Println("a", a)
+					for k, v := range possibleMoves {
+						if v == true {
+							switch k {
+							case "up":
+								if state.You.Body[0].Y+1 == a.Y && state.You.Body[0].X == a.X {
+									fmt.Println("UPDATE:" + k)
+									possibleMoves[k] = false
+								}
+							case "down":
+								if state.You.Body[0].Y-1 == a.Y && state.You.Body[0].X == a.X {
+									fmt.Println("UPDATE:" + k)
+									possibleMoves[k] = false
+								}
+							case "left":
+								if state.You.Body[0].X-1 == a.X && state.You.Body[0].Y == a.Y {
+									fmt.Println("UPDATE:" + k)
+									possibleMoves[k] = false
+								}
+							case "right":
+								if state.You.Body[0].X+1 == a.X && state.You.Body[0].Y == a.Y {
+									fmt.Println("UPDATE:" + k)
+									possibleMoves[k] = false
+								}
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+	fmt.Println(possibleMoves)
 	// TODO: Step 4 - Find food.
 	// Use information in GameState to seek out and find food.
 
