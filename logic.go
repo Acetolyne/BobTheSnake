@@ -70,7 +70,7 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 
 //Takes in a map of possible moves and returns a map of those values with int values showing prefered direction
 func italiansnake(state GameState, possibleMoves *map[string]bool) {
-	fmt.Println("ITALIAN MOVES", &possibleMoves)
+	fmt.Println("ITALIAN MOVES", possibleMoves)
 	////var closestFood int
 
 	////Use below to sort the map
