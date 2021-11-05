@@ -2,6 +2,7 @@ package main
 
 import (
 	"encoding/json"
+	"fmt"
 	"log"
 	"math/rand"
 	"net/http"
@@ -153,7 +154,8 @@ func changeMethod(curmethod *string) {
 	for {
 		opts := [...]string{"italiansnake", "shysnake", "middlesnake", "rudesnake"}
 		*curmethod = opts[rand.Intn(len(opts))]
-		sleeptime := time.Duration(rand.Intn(20)) * time.Second
+		sleeptime := time.Duration(rand.Intn(10)) * time.Second
+		fmt.Println("Sleeping for", sleeptime)
 		time.Sleep(sleeptime)
 
 	}
