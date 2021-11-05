@@ -59,7 +59,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 		"left":  true,
 		"right": true,
 	}
-
+	fmt.Println("1st", &possibleMoves)
 	// Step 0: Don't let your Battlesnake move back in on it's own neck
 	//@todo make below use coords
 	myHead := state.You.Body[0] // Coordinates of your head
@@ -74,7 +74,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 	} else if myNeck.Y > myHead.Y {
 		possibleMoves["up"] = false
 	}
-
+	fmt.Println("2nd", &possibleMoves)
 	// TODO: Step 1 - Don't hit walls.
 	// Use information in GameState to prevent your Battlesnake from moving beyond the boundaries of the board.
 	boardWidth := state.Board.Width
