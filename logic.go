@@ -91,7 +91,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 	if myHead.Y == 0 {
 		possibleMoves["down"] = false
 	}
-	if myHead.X == boardHeight-1 {
+	if myHead.Y == boardHeight-1 {
 		possibleMoves["up"] = false
 	}
 	checkNextMove(state, &possibleMoves)
@@ -110,6 +110,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 	var nextMove string
 
 	safeMoves := []string{}
+	fmt.Println("4th", &possibleMoves)
 	for move, isSafe := range possibleMoves {
 		if isSafe {
 			safeMoves = append(safeMoves, move)
