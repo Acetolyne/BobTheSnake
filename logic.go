@@ -118,22 +118,18 @@ func move(state GameState) BattlesnakeMoveResponse {
 						switch k {
 						case "up":
 							if state.You.Body[0].Y+1 == a.Y && state.You.Body[0].X == a.X {
-								fmt.Println("UPDATE:" + k)
 								possibleMoves[k] = false
 							}
 						case "down":
 							if state.You.Body[0].Y-1 == a.Y && state.You.Body[0].X == a.X {
-								fmt.Println("UPDATE:" + k)
 								possibleMoves[k] = false
 							}
 						case "left":
 							if state.You.Body[0].X-1 == a.X && state.You.Body[0].Y == a.Y {
-								fmt.Println("UPDATE:" + k)
 								possibleMoves[k] = false
 							}
 						case "right":
 							if state.You.Body[0].X+1 == a.X && state.You.Body[0].Y == a.Y {
-								fmt.Println("UPDATE:" + k)
 								possibleMoves[k] = false
 							}
 						}
@@ -143,6 +139,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 		}
 	}
 	fmt.Println(possibleMoves)
+	//We can only use a technique if there are multiple possible moves
 	// TODO: Step 4 - Find food.
 	// Use information in GameState to seek out and find food.
 
