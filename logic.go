@@ -42,12 +42,12 @@ func end(state GameState) {
 	log.Printf("%s END\n\n", state.Game.ID)
 }
 
-func checkNextMove(state GameState, possibleMoves *map[string]bool) {
+func checkNextMove(state GameState, possibleMoves map[string]bool) map[string]bool {
 	var newPos Coord
 	fmt.Println("3rd", possibleMoves)
 	fmt.Println("HEAD:", state.You.Body[0])
 
-	for k, v := range *possibleMoves {
+	for k, v := range possibleMoves {
 		fmt.Println("Key", k)
 		if v == true {
 			switch k {
@@ -63,11 +63,12 @@ func checkNextMove(state GameState, possibleMoves *map[string]bool) {
 			for _, v := range state.You.Body {
 				if v == newPos {
 					fmt.Println("UPDATE", k)
-					//possibleMoves[k] = false
+					possibleMoves[(k)] = false
 				}
 			}
 		}
 	}
+	return possibleMoves
 }
 
 // This function is called on every turn of a game. Use the provided GameState to decide
@@ -116,7 +117,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 	if myHead.Y == boardHeight-1 {
 		possibleMoves["up"] = false
 	}
-	checkNextMove(state, &possibleMoves)
+	possibleMoves = checkNextMove(state, possibleMoves)
 	// TODO: Step 2 - Don't hit yourself.
 	// Use information in GameState to prevent your Battlesnake from colliding with itself.
 	// mybody := state.You.Body
