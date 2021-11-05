@@ -103,40 +103,38 @@ func move(state GameState) BattlesnakeMoveResponse {
 	if myHead.Y == boardHeight-1 {
 		possibleMoves["up"] = false
 	}
-	possibleMoves = dontCollideSelf(state, possibleMoves)
+	//possibleMoves = dontCollideSelf(state, possibleMoves)
 
 	// TODO: Step 3 - Don't collide with others.
 	// Use information in GameState to prevent your Battlesnake from colliding with others.
 	//@todo always avoid others except maybe their head?
 	if CurrentTechnique == "avoidothers" {
 		for _, snake := range state.Board.Snakes {
-			if snake.ID != state.You.ID {
-				fmt.Println("HEAD:", state.You.Body[0])
-				for _, a := range snake.Body {
-					fmt.Println("a", a)
-					for k, v := range possibleMoves {
-						if v == true {
-							switch k {
-							case "up":
-								if state.You.Body[0].Y+1 == a.Y && state.You.Body[0].X == a.X {
-									fmt.Println("UPDATE:" + k)
-									possibleMoves[k] = false
-								}
-							case "down":
-								if state.You.Body[0].Y-1 == a.Y && state.You.Body[0].X == a.X {
-									fmt.Println("UPDATE:" + k)
-									possibleMoves[k] = false
-								}
-							case "left":
-								if state.You.Body[0].X-1 == a.X && state.You.Body[0].Y == a.Y {
-									fmt.Println("UPDATE:" + k)
-									possibleMoves[k] = false
-								}
-							case "right":
-								if state.You.Body[0].X+1 == a.X && state.You.Body[0].Y == a.Y {
-									fmt.Println("UPDATE:" + k)
-									possibleMoves[k] = false
-								}
+			fmt.Println("HEAD:", state.You.Body[0])
+			for _, a := range snake.Body {
+				fmt.Println("a", a)
+				for k, v := range possibleMoves {
+					if v == true {
+						switch k {
+						case "up":
+							if state.You.Body[0].Y+1 == a.Y && state.You.Body[0].X == a.X {
+								fmt.Println("UPDATE:" + k)
+								possibleMoves[k] = false
+							}
+						case "down":
+							if state.You.Body[0].Y-1 == a.Y && state.You.Body[0].X == a.X {
+								fmt.Println("UPDATE:" + k)
+								possibleMoves[k] = false
+							}
+						case "left":
+							if state.You.Body[0].X-1 == a.X && state.You.Body[0].Y == a.Y {
+								fmt.Println("UPDATE:" + k)
+								possibleMoves[k] = false
+							}
+						case "right":
+							if state.You.Body[0].X+1 == a.X && state.You.Body[0].Y == a.Y {
+								fmt.Println("UPDATE:" + k)
+								possibleMoves[k] = false
 							}
 						}
 					}
