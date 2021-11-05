@@ -43,30 +43,23 @@ func end(state GameState) {
 }
 
 func checkNextMove(state GameState, possibleMoves *map[string]bool) {
-	newPos Coordinates
+	var newPos Coordinates
 	fmt.Println("3rd", possibleMoves)
 	fmt.Println("HEAD:", state.You.Body[0])
 	for k, v := range possibleMoves { 
 		if v == true {
 			switch k {
 			case "up":
-					newPos = Coordinates{state.You.Body[0].X, state.You.Body[0].Y + 1}
-					if newPos in state.You.Body {
-						possibleMoves[k] = false
-					}
+				newPos = Coordinates{state.You.Body[0].X, state.You.Body[0].Y + 1}
 			case "down":
 				newPos = Coordinates{state.You.Body[0].X, state.You.Body[0].Y - 1}
-				if newPos in state.You.Body {
-					possibleMoves[k] = false
-				}
 			case "left":
 				newPos = Coordinates{state.You.Body[0].X - 1, state.You.Body[0].Y}
-				if newPos in state.You.Body {
-					possibleMoves[k] = false
-				}
 			case "right":
 				newPos = Coordinates{state.You.Body[0].X + 1, state.You.Body[0].Y}
-				if newPos in state.You.Body {
+			}
+			for _, v := range state.You.Body {
+				if v == newPos {
 					possibleMoves[k] = false
 				}
 			}
