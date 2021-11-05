@@ -153,8 +153,11 @@ func HandleEnd(w http.ResponseWriter, r *http.Request) {
 func changeMethod(curmethod *string) {
 	for {
 		opts := [...]string{"italiansnake", "shysnake", "middlesnake", "rudesnake"}
+		//ReSeed rand
+		rand.Seed(time.Now().UTC().UnixNano())
 		*curmethod = opts[rand.Intn(len(opts))]
-		sleeptime := time.Duration(rand.Intn(10)) * time.Second
+		//min time 5 seconds max is 5+5 (10)
+		sleeptime := time.Duration(5+rand.Intn(5)) * time.Second
 		fmt.Println("Sleeping for", sleeptime)
 		time.Sleep(sleeptime)
 
