@@ -105,13 +105,10 @@ func move(state GameState) BattlesnakeMoveResponse {
 		possibleMoves["up"] = false
 	}
 	possibleMoves = checkNextMove(state, possibleMoves)
-	// TODO: Step 2 - Don't hit yourself.
-	// Use information in GameState to prevent your Battlesnake from colliding with itself.
-	// mybody := state.You.Body
 
 	// TODO: Step 3 - Don't collide with others.
 	// Use information in GameState to prevent your Battlesnake from colliding with others.
-
+	fmt.Println(state.Board.Snakes)
 	// TODO: Step 4 - Find food.
 	// Use information in GameState to seek out and find food.
 
