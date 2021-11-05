@@ -115,6 +115,7 @@ func move(state GameState) BattlesnakeMoveResponse {
 		for _, snake := range state.Board.Snakes {
 			if snake.ID != state.You.ID {
 				for _, a := range snake.Body {
+					fmt.Println("a", a)
 					for k, v := range possibleMoves {
 						if v == true {
 							switch k {
