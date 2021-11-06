@@ -13,7 +13,8 @@ import (
 
 var possibleMoves map[string]bool
 var CurrentTechnique string
-var PossibleFood []Coord
+var uprightFood []Coord
+var downleftFood []Coord
 
 // This function is called when you register your Battlesnake on play.battlesnake.com
 // See https://docs.battlesnake.com/guides/getting-started#step-4-register-your-battlesnake
@@ -71,7 +72,9 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 
 //Takes in a map of possible moves and returns a map of those values with int values showing prefered direction
 func italiansnake(state GameState, possibleMoves *map[string]bool) string {
-	PossibleFood = nil
+	uprightFood = nil
+	var uprightDist = 0
+	var downleftDist = 0
 	fmt.Println("ITALIAN MOVES", possibleMoves)
 	//If there is only one move then return that move else decide the best one to get us some food
 	if len(*possibleMoves) == 1 {
@@ -84,14 +87,36 @@ func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 		//left := (*possibleMoves)["left"]
 		//right := (*possibleMoves)["right"]
 		if (*possibleMoves)["up"] || (*possibleMoves)["right"] {
-			fmt.Println("POSSIBLE", allFood)
 			for _, v := range allFood {
 				if v.X > state.You.Body[0].X || v.Y >= state.You.Body[0].Y {
-					PossibleFood = append(PossibleFood, v)
+					uprightFood = append(uprightFood, v)
+				}
+			}
+			for _, v := range uprightFood {
+				curDist := (v.X - state.You.Body[0].X) + (v.Y - state.You.Body[0].Y)
+				if curDist < uprightDist {
+					uprightDist = curDist
+				}
+			}
+
+		}
+		if (*possibleMoves)["down"] || (*possibleMoves)["left"] {
+			for _, v := range allFood {
+				if v.X <= state.You.Body[0].X || v.Y < state.You.Body[0].Y {
+					downleftFood = append(downleftFood, v)
+				}
+			}
+			for _, v := range downleftFood {
+				curDist := (state.You.Body[0].X - v.X) + (state.You.Body[0].Y - v.Y)
+				if curDist < downleftDist {
+					downleftDist = curDist
 				}
 			}
 		}
-		fmt.Println("BEST:", PossibleFood)
+		fmt.Println("UPRIGHT DIST", uprightDist)
+		fmt.Println("DOWNLEFT DIST", downleftDist)
+		fmt.Println("BEST:", uprightFood)
+		fmt.Println("BEST:", downleftFood)
 	}
 	return "up"
 	////var closestFood int
