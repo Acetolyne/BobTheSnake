@@ -79,7 +79,8 @@ func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 	} else {
 		fmt.Println(state.You.Body[0])
 		allFood := state.Board.Food
-		//if (!(*possibleMoves["up"]) && !(*possibleMoves["right"])) {
+		fmt.Println("MOVES:", possibleMoves)
+		//if *possibleMoves["up"] == true || possibleMoves["right"] {
 		fmt.Println("POSSIBLE", allFood)
 		for _, v := range allFood {
 			if v.X > state.You.Body[0].X || v.Y >= state.You.Body[0].Y {
