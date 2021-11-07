@@ -8,6 +8,7 @@ package main
 import (
 	"fmt"
 	"log"
+	"math"
 	"math/rand"
 )
 
@@ -73,51 +74,67 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 //Takes in a map of possible moves and returns a map of those values with int values showing prefered direction
 func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 	uprightFood = nil
-	var uprightDist = 0
-	var downleftDist = 0
+	//var uprightDist = 0
+	//var downleftDist = 0
+	var FoodDist map[string]float64
 	fmt.Println("ITALIAN MOVES", possibleMoves)
 	//If there is only one move then return that move else decide the best one to get us some food
-	if len(*possibleMoves) == 1 {
-		return "up" //(*possibleMoves)[0]
-	} else {
-		fmt.Println(state.You.Body[0])
-		allFood := state.Board.Food
-		//up := (*possibleMoves)["up"]
-		//down := (*possibleMoves)["down"]
-		//left := (*possibleMoves)["left"]
-		//right := (*possibleMoves)["right"]
-		if (*possibleMoves)["up"] || (*possibleMoves)["right"] {
-			for _, v := range allFood {
-				if v.X > state.You.Body[0].X || v.Y >= state.You.Body[0].Y {
-					uprightFood = append(uprightFood, v)
-				}
-			}
-			for _, v := range uprightFood {
-				curDist := (v.X - state.You.Body[0].X) + (v.Y - state.You.Body[0].Y)
-				if curDist < uprightDist {
-					uprightDist = curDist
-				}
-			}
-
-		}
-		if (*possibleMoves)["down"] || (*possibleMoves)["left"] {
-			for _, v := range allFood {
-				if v.X <= state.You.Body[0].X || v.Y < state.You.Body[0].Y {
-					downleftFood = append(downleftFood, v)
-				}
-			}
-			for _, v := range downleftFood {
-				curDist := (state.You.Body[0].X - v.X) + (state.You.Body[0].Y - v.Y)
-				if curDist < downleftDist {
-					downleftDist = curDist
+	for k := range *possibleMoves {
+		switch k {
+		case "up":
+			curDist := 1000.0
+			for _, v := range state.Board.Food {
+				if v.Y > state.You.Body[0].Y {
+					dist := math.Abs(float64(state.You.Body[0].X-v.X)) + math.Abs(float64(state.You.Body[0].Y-v.Y))
+					if dist < curDist {
+						FoodDist["up"] = dist
+					}
 				}
 			}
 		}
-		fmt.Println("UPRIGHT DIST", uprightDist)
-		fmt.Println("DOWNLEFT DIST", downleftDist)
-		fmt.Println("BEST:", uprightFood)
-		fmt.Println("BEST:", downleftFood)
 	}
+
+	// if len(*possibleMoves) == 1 {
+	// 	return "up" //(*possibleMoves)[0]
+	// } else {
+	// 	fmt.Println(state.You.Body[0])
+	// 	allFood := state.Board.Food
+	// 	//up := (*possibleMoves)["up"]
+	// 	//down := (*possibleMoves)["down"]
+	// 	//left := (*possibleMoves)["left"]
+	// 	//right := (*possibleMoves)["right"]
+	// 	if (*possibleMoves)["up"] || (*possibleMoves)["right"] {
+	// 		for _, v := range allFood {
+	// 			if v.X > state.You.Body[0].X || v.Y >= state.You.Body[0].Y {
+	// 				uprightFood = append(uprightFood, v)
+	// 			}
+	// 		}
+	// 		for _, v := range uprightFood {
+	// 			curDist := (v.X - state.You.Body[0].X) + (v.Y - state.You.Body[0].Y)
+	// 			if curDist < uprightDist {
+	// 				uprightDist = curDist
+	// 			}
+	// 		}
+
+	// 	}
+	// 	if (*possibleMoves)["down"] || (*possibleMoves)["left"] {
+	// 		for _, v := range allFood {
+	// 			if v.X <= state.You.Body[0].X || v.Y < state.You.Body[0].Y {
+	// 				downleftFood = append(downleftFood, v)
+	// 			}
+	// 		}
+	// 		for _, v := range downleftFood {
+	// 			curDist := (state.You.Body[0].X - v.X) + (state.You.Body[0].Y - v.Y)
+	// 			if curDist < downleftDist {
+	// 				downleftDist = curDist
+	// 			}
+	// 		}
+	// 	}
+	fmt.Println("UP DIST", FoodDist["up"])
+	//fmt.Println("DOWNLEFT DIST", downleftDist)
+	//fmt.Println("BEST:", uprightFood)
+	//fmt.Println("BEST:", downleftFood)
+	//}
 	return "up"
 	////var closestFood int
 
