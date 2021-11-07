@@ -9,7 +9,6 @@ import (
 	"fmt"
 	"log"
 	"math"
-	"math/rand"
 )
 
 var possibleMoves map[string]bool
@@ -97,6 +96,46 @@ func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 				}
 			}
 			FoodDist["up"] = curDist
+		case "down":
+			curDist := 1000
+			for _, v := range state.Board.Food {
+				if v.Y < state.You.Body[0].Y {
+					dist := math.Abs(float64(state.You.Body[0].X-v.X)) + math.Abs(float64(state.You.Body[0].Y-v.Y))
+					if int(dist) < curDist {
+						curDist = int(dist)
+					}
+				}
+			}
+			FoodDist["down"] = curDist
+		case "left":
+			curDist := 1000
+			for _, v := range state.Board.Food {
+				if v.X < state.You.Body[0].X {
+					dist := math.Abs(float64(state.You.Body[0].X-v.X)) + math.Abs(float64(state.You.Body[0].Y-v.Y))
+					if int(dist) < curDist {
+						curDist = int(dist)
+					}
+				}
+			}
+			FoodDist["left"] = curDist
+		case "right":
+			curDist := 1000
+			for _, v := range state.Board.Food {
+				if v.X > state.You.Body[0].X {
+					dist := math.Abs(float64(state.You.Body[0].X-v.X)) + math.Abs(float64(state.You.Body[0].Y-v.Y))
+					if int(dist) < curDist {
+						curDist = int(dist)
+					}
+				}
+			}
+			FoodDist["right"] = curDist
+		}
+	}
+	min := FoodDist["up"]
+	dir := "up"
+	for k, v := range FoodDist {
+		if v < min {
+			dir = k
 		}
 	}
 
@@ -141,7 +180,7 @@ func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 	//fmt.Println("BEST:", uprightFood)
 	//fmt.Println("BEST:", downleftFood)
 	//}
-	return "up"
+	return dir
 	////var closestFood int
 
 	////Use below to sort the map
@@ -240,7 +279,7 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 			}
 		}
 	}
-	fmt.Println(possibleMoves)
+	var nextMove string
 	//@todo change health comparison back to 25 after done testing italiansnake
 	if state.You.Health <= 100 {
 		usedmethod = "italiansnake"
@@ -250,7 +289,7 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 	switch usedmethod {
 	case "italiansnake":
 		fmt.Println("ITALIAN")
-		italiansnake(state, &possibleMoves)
+		nextMove = italiansnake(state, &possibleMoves)
 	case "shysnake":
 		fmt.Println("SHY")
 		//@todo run from other snakes
@@ -264,10 +303,8 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 
 	// Finally, choose a move from the available safe moves.
 	// TODO: Step 5 - Select a move to make based on strategy, rather than random.
-	var nextMove string
 
 	safeMoves := []string{}
-	fmt.Println("4th", &possibleMoves)
 	for move, isSafe := range possibleMoves {
 		if isSafe {
 			safeMoves = append(safeMoves, move)
@@ -277,11 +314,12 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 	if len(safeMoves) == 0 {
 		nextMove = "down"
 		log.Printf("%s MOVE %d: No safe moves detected! Moving %s\n", state.Game.ID, state.Turn, nextMove)
-	} else {
-		//next move is a random move from safeMoves list
-		nextMove = safeMoves[rand.Intn(len(safeMoves))]
-		log.Printf("%s MOVE %d: %s\n", state.Game.ID, state.Turn, nextMove)
-	}
+	} //else {
+	//next move is a random move from safeMoves list
+	//nextMove = safeMoves[rand.Intn(len(safeMoves))]
+	//log.Printf("%s MOVE %d: %s\n", state.Game.ID, state.Turn, nextMove)
+	//}
+	fmt.Println("MOVING:" + nextMove)
 	return BattlesnakeMoveResponse{
 		Move: nextMove,
 	}
