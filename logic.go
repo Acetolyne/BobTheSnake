@@ -72,7 +72,7 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 
 //Takes in a map of possible moves and returns a map of those values with int values showing prefered direction
 func italiansnake(state GameState, possibleMoves *map[string]bool) string {
-	uprightFood = nil
+	var dir string
 	//var uprightDist = 0
 	//var downleftDist = 0
 	FoodDist := map[string]int{
@@ -131,8 +131,17 @@ func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 			FoodDist["right"] = curDist
 		}
 	}
+	//pick a default direction that is possible
+	if (*possibleMoves)["up"] == true {
+		dir = "up"
+	} else if (*possibleMoves)["down"] == true {
+		dir = "down"
+	} else if (*possibleMoves)["left"] == true {
+		dir = "left"
+	} else if (*possibleMoves)["right"] == true {
+		dir = "right"
+	}
 	min := FoodDist["up"]
-	dir := "up"
 	for k, v := range FoodDist {
 		if v < min {
 			dir = k
