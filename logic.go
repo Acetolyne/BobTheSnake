@@ -76,18 +76,23 @@ func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 	uprightFood = nil
 	//var uprightDist = 0
 	//var downleftDist = 0
-	var FoodDist map[string]float64
+	FoodDist := map[string]int{
+		"up":    1000,
+		"down":  1000,
+		"left":  1000,
+		"right": 1000,
+	}
 	fmt.Println("ITALIAN MOVES", possibleMoves)
 	//If there is only one move then return that move else decide the best one to get us some food
 	for k := range *possibleMoves {
 		switch k {
 		case "up":
-			curDist := 1000.0
+			curDist := 1000
 			for _, v := range state.Board.Food {
 				if v.Y > state.You.Body[0].Y {
 					dist := math.Abs(float64(state.You.Body[0].X-v.X)) + math.Abs(float64(state.You.Body[0].Y-v.Y))
-					if dist < curDist {
-						FoodDist["up"] = dist
+					if int(dist) < curDist {
+						FoodDist["up"] = int(dist)
 					}
 				}
 			}
