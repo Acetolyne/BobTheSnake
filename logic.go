@@ -70,19 +70,16 @@ func dontCollideSelf(state GameState, possibleMoves map[string]bool) map[string]
 	return possibleMoves
 }
 
-//Takes in a map of possible moves and returns a map of those values with int values showing prefered direction
+//Takes in a map of possible moves and returns the direction to get to the closest food possible
 func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 	var dir string
-	//var uprightDist = 0
-	//var downleftDist = 0
 	FoodDist := map[string]int{
 		"up":    1000,
 		"down":  1000,
 		"left":  1000,
 		"right": 1000,
 	}
-	fmt.Println("ITALIAN MOVES", possibleMoves)
-	//If there is only one move then return that move else decide the best one to get us some food
+	//@todo If there is only one move then return that move else decide the best one to get us some food
 	for k := range *possibleMoves {
 		switch k {
 		case "up":
@@ -148,72 +145,9 @@ func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 		}
 	}
 
-	// if len(*possibleMoves) == 1 {
-	// 	return "up" //(*possibleMoves)[0]
-	// } else {
-	// 	fmt.Println(state.You.Body[0])
-	// 	allFood := state.Board.Food
-	// 	//up := (*possibleMoves)["up"]
-	// 	//down := (*possibleMoves)["down"]
-	// 	//left := (*possibleMoves)["left"]
-	// 	//right := (*possibleMoves)["right"]
-	// 	if (*possibleMoves)["up"] || (*possibleMoves)["right"] {
-	// 		for _, v := range allFood {
-	// 			if v.X > state.You.Body[0].X || v.Y >= state.You.Body[0].Y {
-	// 				uprightFood = append(uprightFood, v)
-	// 			}
-	// 		}
-	// 		for _, v := range uprightFood {
-	// 			curDist := (v.X - state.You.Body[0].X) + (v.Y - state.You.Body[0].Y)
-	// 			if curDist < uprightDist {
-	// 				uprightDist = curDist
-	// 			}
-	// 		}
-
-	// 	}
-	// 	if (*possibleMoves)["down"] || (*possibleMoves)["left"] {
-	// 		for _, v := range allFood {
-	// 			if v.X <= state.You.Body[0].X || v.Y < state.You.Body[0].Y {
-	// 				downleftFood = append(downleftFood, v)
-	// 			}
-	// 		}
-	// 		for _, v := range downleftFood {
-	// 			curDist := (state.You.Body[0].X - v.X) + (state.You.Body[0].Y - v.Y)
-	// 			if curDist < downleftDist {
-	// 				downleftDist = curDist
-	// 			}
-	// 		}
-	// 	}
-	fmt.Println("UP DIST", FoodDist["up"])
-	//fmt.Println("DOWNLEFT DIST", downleftDist)
-	//fmt.Println("BEST:", uprightFood)
-	//fmt.Println("BEST:", downleftFood)
-	//}
 	return dir
-	////var closestFood int
-
-	////Use below to sort the map
-	// a := []file{
-	// 	{"april.txt", 9}, {"may.txt", 7},
-	//  }
-	//  sort.Slice(a, func (d, e int) bool {
-	// 	return a[d].size < a[e].size
-	//  })
-	//  fmt.Println(a)
-	/////////////////////////////////////////
-	// for _, v := range *possibleMoves {
-	// 	if v == true {
-	// 		for _, v := range state.Board.Food {
-	// 			curDistance := ((v.X - state.You.Body[0].X) + (v.Y - state.You.Body[0].Y))
-	// 			if curDistance < closestFood {
-	// 				closestFood = curDistance
-	// 			}
-	// 		}
-	// 	}
-	// }
 }
 
-//@todo create function that allows us to pass in a slice of coordinates and return possibleMoves
 // This function is called on every turn of a game.
 func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 	var usedmethod string
@@ -237,19 +171,15 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 	boardHeight := state.Board.Height
 	if myHead.X == 0 {
 		delete(possibleMoves, "left")
-		//possibleMoves["left"] = false
 	}
 	if myHead.X == boardWidth-1 {
 		delete(possibleMoves, "right")
-		//possibleMoves["right"] = false
 	}
 	if myHead.Y == 0 {
 		delete(possibleMoves, "down")
-		//possibleMoves["down"] = false
 	}
 	if myHead.Y == boardHeight-1 {
 		delete(possibleMoves, "up")
-		//possibleMoves["up"] = false
 	}
 	//possibleMoves = dontCollideSelf(state, possibleMoves)
 
@@ -266,22 +196,18 @@ func move(state GameState, curmethod *string) BattlesnakeMoveResponse {
 					case "up":
 						if state.You.Body[0].Y+1 == a.Y && state.You.Body[0].X == a.X {
 							delete(possibleMoves, k)
-							//possibleMoves[k] = false
 						}
 					case "down":
 						if state.You.Body[0].Y-1 == a.Y && state.You.Body[0].X == a.X {
 							delete(possibleMoves, k)
-							//possibleMoves[k] = false
 						}
 					case "left":
 						if state.You.Body[0].X-1 == a.X && state.You.Body[0].Y == a.Y {
 							delete(possibleMoves, k)
-							//possibleMoves[k] = false
 						}
 					case "right":
 						if state.You.Body[0].X+1 == a.X && state.You.Body[0].Y == a.Y {
 							delete(possibleMoves, k)
-							//possibleMoves[k] = false
 						}
 					}
 				}
