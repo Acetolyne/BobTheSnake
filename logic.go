@@ -92,10 +92,11 @@ func italiansnake(state GameState, possibleMoves *map[string]bool) string {
 				if v.Y > state.You.Body[0].Y {
 					dist := math.Abs(float64(state.You.Body[0].X-v.X)) + math.Abs(float64(state.You.Body[0].Y-v.Y))
 					if int(dist) < curDist {
-						FoodDist["up"] = int(dist)
+						curDist = int(dist)
 					}
 				}
 			}
+			FoodDist["up"] = curDist
 		}
 	}
 
